@@ -1,4 +1,9 @@
-FROM ubuntu:20.04
+ARG BASE_CONTAINER=jupyter/base-notebook:ubuntu-20.04
+FROM $BASE_CONTAINER
+
+LABEL maintainer="Ruth Kurniawati <rkurniawati@westfield.ma.edu>"
+
+USER root
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
