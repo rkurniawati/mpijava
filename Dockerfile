@@ -24,11 +24,17 @@ RUN adduser --disabled-password \
 COPY . $HOME
 RUN chown -R $NB_UID $HOME
 
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+
 USER $NB_USER
 
 # Launch the notebook server
 
 EXPOSE 8888
 WORKDIR $HOME
-ENTRYPOINT [ "/bin/bash", "-c"]
-CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0"]
+
